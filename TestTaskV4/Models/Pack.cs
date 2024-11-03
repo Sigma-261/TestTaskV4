@@ -17,15 +17,7 @@ public class Pack : Entity
     public int Number {  get; set; }
 
     /// <summary>
-    /// Идентификатор трубы
+    /// Список труб в пакете
     /// </summary>
-    [Column("ID_TUBE")]
-    public Guid IdTube { get; set; }
-
-    /// <summary>
-    /// Труба
-    /// </summary>
-    [ForeignKey("IdTube")]
-    [JsonIgnore]
-    public Tube Tube { get; set; }
+    public List<Tube> Tubes { get; set; }
 }

@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
 using System.Text.Json.Serialization;
+using TestTaskV4.Enum;
 
 namespace TestTaskV4.Models;
 
@@ -24,28 +25,33 @@ public class Tube : Entity
     public bool IsDefect { get; set; }
 
     /// <summary>
-    /// Является ли труба упакованной
-    /// </summary>
-    [Column("IS_PACKED")]
-    [JsonIgnore]
-    public bool IsPacked { get; set; } = false;
-
-    /// <summary>
-    /// Идентификатор марки стали
-    /// </summary>
-    [Column("ID_GRADE")]
-    public Guid IdGrade { get; set; }
-
-    /// <summary>
     /// Марка стали
     /// </summary>
-    [ForeignKey("IdGrade")]
-    [JsonIgnore]
-    public SteelGrade? Grade { get; set; }
+    [Column("GRADE")]
+    public Grade Grade { get; set; }
+
+    /// <summary>
+    /// Размер трубы
+    /// </summary>
+    [Column("SIZE")]
+    public decimal Size { get; set; }
 
     /// <summary>
     /// Вес трубы
     /// </summary>
     [Column("WEIGHT")]
     public decimal Weight { get; set; }
+
+    /// <summary>
+    /// Идентификатор Пакета
+    /// </summary>
+    [Column("ID_PACK")]
+    public Guid? IdPack { get; set; }
+
+    /// <summary>
+    /// Пакет
+    /// </summary>
+    [ForeignKey("IdPack")]
+    [JsonIgnore]
+    public Pack? Pack { get; set; }
 }

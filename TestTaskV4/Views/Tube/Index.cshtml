@@ -1,7 +1,41 @@
-﻿@*
+﻿@model IEnumerable<Tube>
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
 }
 
-<h1>Hello world!</h1>
+<h1>Список труб</h1>
+
+<div class="list-group">
+    @foreach (var item in Model)
+    {
+        <div class="list-group-item flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 @(item.IsDefect == true ? "style=color:red" : "") class="mb-1">Номер: @item.Number</h5>
+                @if (@item.IdPack == null)
+                {
+                    <small>Не в пакете</small>
+                }
+                else
+                {
+                    <small>В пакете #@item.Pack.Number</small>
+                }
+            </div>
+
+            <small>Марка: @item.Grade</small>
+            <small>Размер: @item.Size</small>
+            <small>Вес: @item.Weight</small>
+
+            @if (@item.IdPack == null)
+            {
+                <div class="card-body">
+                    <a href="#" class="btn btn-primary">Изменить</a>
+                    <a href="#" class="btn btn-primary">Удалить</a>
+                </div>
+            }
+        </div>
+        
+    }
+</div>
+

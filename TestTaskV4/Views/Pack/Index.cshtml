@@ -1,5 +1,15 @@
-﻿@*
+﻿@model IEnumerable<Pack>
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
 }
+
+<h1>Список пакетов</h1>
+
+<div class="list-group">
+    @foreach (var item in Model)
+    {
+        <a href="#" class="list-group-item list-group-item-action">Пакет #@item.Number</a>
+    }
+</div>

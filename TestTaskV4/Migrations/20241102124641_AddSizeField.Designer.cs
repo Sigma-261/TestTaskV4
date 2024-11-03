@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TestTaskV4;
@@ -11,9 +12,11 @@ using TestTaskV4;
 namespace TestTaskV4.Migrations
 {
     [DbContext(typeof(TubeContext))]
-    partial class TubeContextModelSnapshot : ModelSnapshot
+    [Migration("20241102124641_AddSizeField")]
+    partial class AddSizeField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,11 +40,17 @@ namespace TestTaskV4.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("UPDATE_AT");
 
+                    b.Property<Guid>("IdTube")
+                        .HasColumnType("uuid")
+                        .HasColumnName("ID_TUBE");
+
                     b.Property<int>("Number")
                         .HasColumnType("integer")
                         .HasColumnName("NUMBER");
 
                     b.HasKey("Guid");
+
+                    b.HasIndex("IdTube");
 
                     b.ToTable("PACK");
                 });
@@ -65,13 +74,13 @@ namespace TestTaskV4.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("GRADE");
 
-                    b.Property<Guid?>("IdPack")
-                        .HasColumnType("uuid")
-                        .HasColumnName("ID_PACK");
-
                     b.Property<bool>("IsDefect")
                         .HasColumnType("boolean")
                         .HasColumnName("IS_DEFECT");
+
+                    b.Property<bool>("IsPacked")
+                        .HasColumnType("boolean")
+                        .HasColumnName("IS_PACKED");
 
                     b.Property<int>("Number")
                         .HasColumnType("integer")
@@ -87,23 +96,18 @@ namespace TestTaskV4.Migrations
 
                     b.HasKey("Guid");
 
-                    b.HasIndex("IdPack");
-
                     b.ToTable("TUBE");
-                });
-
-            modelBuilder.Entity("TestTaskV4.Models.Tube", b =>
-                {
-                    b.HasOne("TestTaskV4.Models.Pack", "Pack")
-                        .WithMany("Tubes")
-                        .HasForeignKey("IdPack");
-
-                    b.Navigation("Pack");
                 });
 
             modelBuilder.Entity("TestTaskV4.Models.Pack", b =>
                 {
-                    b.Navigation("Tubes");
+                    b.HasOne("TestTaskV4.Models.Tube", "Tube")
+                        .WithMany()
+                        .HasForeignKey("IdTube")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tube");
                 });
 #pragma warning restore 612, 618
         }
